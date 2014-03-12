@@ -32,7 +32,7 @@ public class WebController {
 
     private Task getDatabaseInformation(Integer id) {
         try {
-            return db_store.getData(id);
+            return db_store.getTaskById(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
