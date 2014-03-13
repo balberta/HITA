@@ -15,6 +15,30 @@ public class Task {
     private String description;
     private String updateTime;
 
+    public Task(int uuid, String name, String type, String status, String description) {
+        this.uuid = uuid;
+        this.name = name;
+        this.type = type;
+        this.status = status;
+        this.description = description;
+    }
+
+    public Task() {
+    }
+
+    public Task(String name, String type, String status, String description) {
+        this.name = name;
+        this.type = type;
+        this.status = status;
+        this.description = description;
+    }
+
+    public Task(String name, String type, String description) {
+        this.name = name;
+        this.type = type;
+        this.description = description;
+    }
+
     public String getUpdateTime() {
         return updateTime;
     }
