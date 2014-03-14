@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description.
@@ -73,20 +75,21 @@ public class WebController {
     @ResponseStatus(HttpStatus.OK)
     public
     @ResponseBody
-    void doSearch(@PathVariable("field") String field,
+    List doSearch(@PathVariable("field") String field,
                   @RequestParam(value = "name", required = false) String name,
                   @RequestParam(value = "type", required = false) String type,
                   @RequestParam(value = "status", required = false) String status,
                   @RequestParam(value = "sdate", required = false) String sdate,
                   @RequestParam(value = "edate", required = false) String edate,
                   @RequestParam("id") Integer id) {
+        List<Task> searchRes = new ArrayList<Task>();
         try {
             switch (field) {
                 case "byStatus":
-                    db_store.searchByStatus(status);
+                    searchRes = db_store.searchByStatus(status);
                     break;
                 case "byType":
-                    db_store.searchByType(type);
+                    searchRes = db_store.searchByType(type);
                     break;
                 case "byDate":
                     break;
@@ -94,6 +97,7 @@ public class WebController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return searchRes;
     }
 
     private Task getDatabaseInformation(Integer id) {

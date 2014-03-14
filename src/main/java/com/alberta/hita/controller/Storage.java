@@ -7,6 +7,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description.
@@ -17,10 +19,17 @@ import java.sql.*;
  */
 public class Storage {
     //Database connection parameters
-    String url = "jdbc:mysql://localhost:3306/";
+    /*String url = "jdbc:mysql://localhost:3306/";
     String dbname = "hita";
     String userName = "root";
-    String password = "root";
+    String password = "root";  */
+
+    String url = "jdbc:mysql://192.168.1.100:3306/";
+    String dbname = "hita";
+    String driver = "com.mysql.jdbc.Driver";
+    String userName = "hitaUser";
+    String password = "Yr9deFf9zntDRPun";
+
     Task task = new Task();
     Connection conn;
     //TODO:Add support for submission time
@@ -135,16 +144,47 @@ public class Storage {
 
     }
 
-    public void searchByStatus(String status) throws SQLException {
+    public List searchByStatus(String status) throws SQLException {
+        System.out.println("In searchByStatus");
+        List<Task> searchRes = new ArrayList<Task>();
+        System.out.printf("SELECT * FROM master WHERE status = %s\n", status);
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM master WHERE status = ?");
         statement.setString(1, status);
-        statement.executeQuery();
+        ResultSet res = statement.executeQuery();
+        while (res.next()) {
+            Task task = new Task();
+            DateTime dt = new DateTime(res.getTimestamp("updateTime"));
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            task.setUuid(res.getInt("id"));
+            task.setName(res.getString("name"));
+            task.setType(res.getString("type"));
+            task.setStatus(res.getString("status"));
+            task.setDescription(res.getString("description"));
+            task.setUpdateTime(fmt.print(dt));
+            searchRes.add(task);
+        }
+        return searchRes;
     }
 
-    public void searchByType(String type) throws SQLException {
+    public List searchByType(String type) throws SQLException {
+        System.out.println("In searchByStatus");
+        List<Task> searchRes = new ArrayList<Task>();
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM master WHERE type = ?");
         statement.setString(1, type);
-        statement.executeQuery();
+        ResultSet res = statement.executeQuery();
+        while (res.next()) {
+            Task task = new Task();
+            DateTime dt = new DateTime(res.getTimestamp("updateTime"));
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            task.setUuid(res.getInt("id"));
+            task.setName(res.getString("name"));
+            task.setType(res.getString("type"));
+            task.setStatus(res.getString("status"));
+            task.setDescription(res.getString("description"));
+            task.setUpdateTime(fmt.print(dt));
+            searchRes.add(task);
+        }
+        return searchRes;
     }
 
    private int getMostRecentTask() throws SQLException {
