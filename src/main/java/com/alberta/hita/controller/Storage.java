@@ -19,16 +19,16 @@ import java.util.List;
  */
 public class Storage {
     //Database connection parameters
-    /*String url = "jdbc:mysql://localhost:3306/";
+    String url = "jdbc:mysql://10.129.59.133:3306/";
     String dbname = "hita";
-    String userName = "root";
-    String password = "root";  */
-
+    String userName = "hitaUser";
+    String password = "u34atFRwNNMKB375";
+/*
     String url = "jdbc:mysql://192.168.1.100:3306/";
     String dbname = "hita";
     String driver = "com.mysql.jdbc.Driver";
     String userName = "hitaUser";
-    String password = "Yr9deFf9zntDRPun";
+    String password = "Yr9deFf9zntDRPun";     */
 
     Task task = new Task();
     Connection conn;
@@ -59,14 +59,16 @@ public class Storage {
             statement.setInt(1, id);
             ResultSet res = statement.executeQuery();
             while (res.next()) {
-                DateTime dt = new DateTime(res.getTimestamp("updateTime"));
+                DateTime udt = new DateTime(res.getTimestamp("updateTime"));
+                DateTime sdt = new DateTime(res.getTimestamp("submitTime"));
                 DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
                 task.setUuid(res.getInt("id"));
                 task.setName(res.getString("name"));
                 task.setType(res.getString("type"));
                 task.setStatus(res.getString("status"));
                 task.setDescription(res.getString("description"));
-                task.setUpdateTime(fmt.print(dt));
+                task.setUpdateTime(fmt.print(udt));
+                task.setSubmitTime(fmt.print(sdt));
             }
             //conn.close();
         } catch (Exception e) {
@@ -146,43 +148,45 @@ public class Storage {
 
     public List searchByStatus(String status) throws SQLException {
         System.out.println("In searchByStatus");
-        List<Task> searchRes = new ArrayList<Task>();
+        List<Task> searchRes = new ArrayList();
         System.out.printf("SELECT * FROM master WHERE status = %s\n", status);
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM master WHERE status = ?");
         statement.setString(1, status);
         ResultSet res = statement.executeQuery();
         while (res.next()) {
             Task task = new Task();
-            DateTime dt = new DateTime(res.getTimestamp("updateTime"));
+            DateTime udt = new DateTime(res.getTimestamp("updateTime"));
+            DateTime sdt = new DateTime(res.getTimestamp("submitTime"));
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             task.setUuid(res.getInt("id"));
             task.setName(res.getString("name"));
             task.setType(res.getString("type"));
             task.setStatus(res.getString("status"));
             task.setDescription(res.getString("description"));
-            task.setUpdateTime(fmt.print(dt));
-            searchRes.add(task);
+            task.setUpdateTime(fmt.print(udt));
+            task.setSubmitTime(fmt.print(sdt));;
         }
         return searchRes;
     }
 
     public List searchByType(String type) throws SQLException {
         System.out.println("In searchByStatus");
-        List<Task> searchRes = new ArrayList<Task>();
+        List<Task> searchRes = new ArrayList();
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM master WHERE type = ?");
         statement.setString(1, type);
         ResultSet res = statement.executeQuery();
         while (res.next()) {
             Task task = new Task();
-            DateTime dt = new DateTime(res.getTimestamp("updateTime"));
+            DateTime udt = new DateTime(res.getTimestamp("updateTime"));
+            DateTime sdt = new DateTime(res.getTimestamp("submitTime"));
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             task.setUuid(res.getInt("id"));
             task.setName(res.getString("name"));
             task.setType(res.getString("type"));
             task.setStatus(res.getString("status"));
             task.setDescription(res.getString("description"));
-            task.setUpdateTime(fmt.print(dt));
-            searchRes.add(task);
+            task.setUpdateTime(fmt.print(udt));
+            task.setSubmitTime(fmt.print(sdt));
         }
         return searchRes;
     }
