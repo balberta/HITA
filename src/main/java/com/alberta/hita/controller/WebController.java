@@ -76,7 +76,6 @@ public class WebController {
     public
     @ResponseBody
     List doSearch(@PathVariable("field") String field,
-                  @RequestParam(value = "name", required = false) String name,
                   @RequestParam(value = "type", required = false) String type,
                   @RequestParam(value = "status", required = false) String status,
                   @RequestParam(value = "sdate", required = false) String sdate,
