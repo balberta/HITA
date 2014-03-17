@@ -14,6 +14,7 @@ public class Task {
     private String status;
     private String description;
     private String updateTime;
+    private String submitTime;
 
     public Task(int uuid, String name, String type, String status, String description) {
         this.uuid = uuid;
@@ -37,6 +38,14 @@ public class Task {
         this.name = name;
         this.type = type;
         this.description = description;
+    }
+
+    public String getSubmitTime() {
+        return submitTime;
+    }
+
+    public void setSubmitTime(String submitTime) {
+        this.submitTime = submitTime;
     }
 
     public String getUpdateTime() {
