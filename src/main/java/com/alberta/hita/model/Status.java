@@ -9,7 +9,7 @@ package com.alberta.hita.model;
  * @version 1.0
  */
 public enum Status {
-    NEW("NEW"), OPEN("OPEN"), CLOSED("CLOSED"), TASK("TASK"), ISSUE("ISSUE");
+    NEW("New"), OPEN("Open"), CLOSED("Closed"), TASK("Task"), ISSUE("Issue");
 
     private String text;
 

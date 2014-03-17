@@ -129,7 +129,7 @@
     </form>
     <div id="results"></div>
     <div id="footer">
-        Created for <a href="">HITA</a>
+        Created for <a href="">hita</a>
     </div>
 </div>
 
@@ -201,7 +201,7 @@
         var table_info = "<h2>Results</h2><table id = \"resultTable\" border=\"3\" CELLPADDING=\"2\" ><tr><th>ID</th><th>Name</th><th>Type</th><th>Status</th><th>Description</th><th>Update Time</th><th>Submission Time</th></tr>";
         $.each(raw_data, function (key, val) {
             var val = raw_data[key];
-            table_info += ('<tr id="' + key + '"><td>' + val.uuid + '</td><td>' + val.name + '</td><td>' + val.type + '</td><td>' + val.status + '</td><td>' + val.description + '</td><td>' + val.updateTime + '</td><td>' + val.submitTime + '</td></tr>');
+            table_info += ('<tr id="' + key + '"><td>' + generateURL(val) + '</td><td>' + val.name + '</td><td>' + val.type + '</td><td>' + val.status + '</td><td>' + val.description + '</td><td>' + val.updateTime + '</td><td>' + val.submitTime + '</td></tr>');
 create_table(table_info);
         });
 }
@@ -218,5 +218,10 @@ create_table(table_info);
         //alert("You clicked me!");
         document.getElementById('search_form').reset();
         document.getElementById('results').innerHTML = "";
+    }
+
+    function generateURL(task){
+        var uri = '/hita/forms/edit.html?uuid=' + task.uuid + '&name=' + task.name + '&type=' + task.type + '&status=' + task.status + '&desc=' + task.description;
+        return '<a href='+ encodeURI(uri) +'>' + task.uuid  + '</a>';
     }
 </script>

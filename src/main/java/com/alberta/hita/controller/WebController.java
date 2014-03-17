@@ -28,7 +28,7 @@ public class WebController {
     @ResponseBody
     Task getResponse(@RequestParam("id") Integer id) {
         System.out.println("id was: " + id);
-        return getDatabaseInformation(id);
+        return db_store.getTaskById(id);
     }
 
     @RequestMapping("/update")

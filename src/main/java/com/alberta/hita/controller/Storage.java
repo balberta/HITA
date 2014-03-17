@@ -19,16 +19,16 @@ import java.util.List;
  */
 public class Storage {
     //Database connection parameters
-    String url = "jdbc:mysql://10.129.59.133:3306/";
+    /*String url = "jdbc:mysql://10.129.59.133:3306/";
     String dbname = "hita";
     String userName = "hitaUser";
-    String password = "u34atFRwNNMKB375";
-/*
+    String password = "u34atFRwNNMKB375";     */
+
     String url = "jdbc:mysql://192.168.1.100:3306/";
     String dbname = "hita";
     String driver = "com.mysql.jdbc.Driver";
     String userName = "hitaUser";
-    String password = "Yr9deFf9zntDRPun";     */
+    String password = "Yr9deFf9zntDRPun";
 
     Task task = new Task();
     Connection conn;
@@ -39,14 +39,17 @@ public class Storage {
      */
     public Storage() {
         try {
+            Class.forName(driver);
             conn = DriverManager.getConnection(url + dbname, userName, password);
         } catch (SQLException e) {
             throw new RuntimeException("Internal System Error.", e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
     /**
-     * This method searches the HITA database by id. It accepts an integer id and returns the
+     * This method searches the hita database by id. It accepts an integer id and returns the
      * corresponding record.
      *
      * @param id Integer id value of the task.
@@ -70,10 +73,11 @@ public class Storage {
                 task.setUpdateTime(fmt.print(udt));
                 task.setSubmitTime(fmt.print(sdt));
             }
-            //conn.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return task;
     }
 
@@ -82,7 +86,7 @@ public class Storage {
         PreparedStatement statement = conn.prepareStatement("INSERT INTO master(name, type, status, description) VALUES (?,?,?,?)");
         statement.setString(1,task.getName());
         statement.setString(2,task.getType());
-        statement.setString(3, (Status.NEW).toString());
+        statement.setString(3, (Status.NEW).getText());
         statement.setString(4,task.getDescription());
         statement.executeUpdate();
         return getMostRecentTask();
@@ -230,4 +234,8 @@ public class Storage {
 
        return max;
    }
+
+    public void closeConnection() throws SQLException {
+        this.conn.close();
+    }
 }

@@ -12,10 +12,10 @@
         <commons-io.version>2.4</commons-io.version>
         <commons-cli.version>1.2</commons-cli.version>
     </properties>
-  <artifactId>HITA</artifactId>
+  <artifactId>hita</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>HITA Maven Webapp</name>
+  <name>hita Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
       <dependency>
@@ -122,7 +122,7 @@
              </configuration>
          </plugin>
      </plugins>
-    <finalName>HITA</finalName>
+    <finalName>hita</finalName>
 
   </build>
 </project>
