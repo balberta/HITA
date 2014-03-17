@@ -1,48 +1,66 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Check Status</title>
-<link rel="stylesheet" type="text/css" href="../css/view.css" media="all">
-<script type="text/javascript" src="../js/view_list.js"></script>
-<script type="text/javascript" src="../js/calendar.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Check Status</title>
+    <link rel="stylesheet" type="text/css" href="../css/view.css" media="all">
+
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../js/view_list.js"></script>
+    <script type="text/javascript" src="../js/calendar.js"></script>
 </head>
-<body id="main_body" >
-	
-	<img id="top" src="../img/top.png" alt="">
-	<div id="form_container">
-	
-		<h1><a>Check Status</a></h1>
-		<form id="form_810569" class="appnitro"  method="post" action="">
-					<div class="form_description">
-			<h2>Check Status</h2>
-			<p>Search by type, status or a range of dates.</p>
-		</div>						
-			<ul >
-			
-					<li id="li_3" >
-		<label class="description" for="element_3">Type </label>
-		<div>
-		<select class="element select small" id="element_3" name="element_3"> 
-			<option value="" selected="selected"></option>
-<option value="1" >Issue</option>
-<option value="2" >Task</option>
+<body id="main_body">
 
-		</select>
-		</div><p class="guidelines" id="guide_3"><small>Select the type.</small></p> 
-		</li>		<li id="li_4" >
-		<label class="description" for="element_4">Status </label>
-		<div>
-		<select class="element select medium" id="element_4" name="element_4"> 
-			<option value="" selected="selected"></option>
-<option value="1" >New</option>
-<option value="2" >Open</option>
-<option value="3" >Closed</option>
+<img id="top" src="../img/top.png" alt="">
 
-		</select>
-		</div><p class="guidelines" id="guide_4"><small>Seclet status.</small></p> 
-		</li>		<li id="li_1" >
-		<label class="description" for="element_1">Starting: </label>
+<div id="form_container">
+
+    <h1><a>Check Status</a></h1>
+
+    <form id="search_form" class="appnitro">
+        <div class="form_description">
+            <h2>Check Status</h2>
+
+            <p>Search by type, status or a range of dates.</p>
+        </div>
+        <ul>
+
+            <li id="li_3">
+                <label class="description" for="type_dd">Type </label>
+
+                <div>
+                    <select class="element select small" id="type_dd" name="type_dd">
+                        <option value="None" selected="selected"></option>
+                        <option value="Issue">Issue</option>
+                        <option value="Task">Task</option>
+
+                    </select>
+                </div>
+                <p class="guidelines" id="guide_3">
+                    <small>Select the type.</small>
+                </p>
+            </li>
+            <li id="li_4">
+                <label class="description" for="status_dd">Status </label>
+
+                <div>
+                    <select class="element select medium" id="status_dd" name="status_dd">
+                        <option value="None" selected="selected"></option>
+                        <option value="New">New</option>
+                        <option value="Open">Open</option>
+                        <option value="Closed">Closed</option>
+
+                    </select>
+                </div>
+                <p class="guidelines" id="guide_4">
+                    <small>Select status.</small>
+                </p>
+            </li>
+            <li id="li_1">
+                <label class="description" for="element_1">Starting: </label>
 		<span>
 			<input id="element_1_1" name="element_1_1" class="element text" size="2" maxlength="2" value="" type="text"> /
 			<label for="element_1_1">MM</label>
@@ -59,19 +77,20 @@
 		<span id="calendar_1">
 			<img id="cal_img_1" class="datepicker" src="../img/calendar.gif" alt="Pick a date.">
 		</span>
-		<script type="text/javascript">
-			Calendar.setup({
-			inputField	 : "element_1_3",
-			baseField    : "element_1",
-			displayArea  : "calendar_1",
-			button		 : "cal_img_1",
-			ifFormat	 : "%B %e, %Y",
-			onSelect	 : selectDate
-			});
-		</script>
-		 
-		</li>		<li id="li_2" >
-		<label class="description" for="element_2">Ending </label>
+                <script type="text/javascript">
+                    Calendar.setup({
+                        inputField: "element_1_3",
+                        baseField: "element_1",
+                        displayArea: "calendar_1",
+                        button: "cal_img_1",
+                        ifFormat: "%B %e, %Y",
+                        onSelect: selectDate
+                    });
+                </script>
+
+            </li>
+            <li id="li_2">
+                <label class="description" for="element_2">Ending </label>
 		<span>
 			<input id="element_2_1" name="element_2_1" class="element text" size="2" maxlength="2" value="" type="text"> /
 			<label for="element_2_1">MM</label>
@@ -88,30 +107,116 @@
 		<span id="calendar_2">
 			<img id="cal_img_2" class="datepicker" src="../img/calendar.gif" alt="Pick a date.">
 		</span>
-		<script type="text/javascript">
-			Calendar.setup({
-			inputField	 : "element_2_3",
-			baseField    : "element_2",
-			displayArea  : "calendar_2",
-			button		 : "cal_img_2",
-			ifFormat	 : "%B %e, %Y",
-			onSelect	 : selectDate
-			});
-		</script>
-		 
-		</li>
-			
-					<li class="buttons">
-			    <input type="hidden" name="form_id" value="810569" />
-			    
-				<input id="saveForm" class="button_text" type="submit" name="submit" value="Submit" />
-		</li>
-			</ul>
-		</form>	
-		<div id="footer">
-			Generated by <a href="http://www.phpform.org">pForm</a>
-		</div>
-	</div>
-	<img id="bottom" src="../img/bottom.png" alt="">
-	</body>
+                <script type="text/javascript">
+                    Calendar.setup({
+                        inputField: "element_2_3",
+                        baseField: "element_2",
+                        displayArea: "calendar_2",
+                        button: "cal_img_2",
+                        ifFormat: "%B %e, %Y",
+                        onSelect: selectDate
+                    });
+                </script>
+
+            </li>
+
+            <li class="buttons">
+                <input type="hidden" name="form_id" value="810569"/>
+
+                <input id="saveForm" class="button_text" type="button" name="submit" value="Search"/>
+            </li>
+        </ul>
+    </form>
+    <div id="results"></div>
+    <div id="footer">
+        Created for <a href="">HITA</a>
+    </div>
+</div>
+
+<img id="bottom" src="../img/bottom.png" alt="">
+</body>
 </html>
+
+
+<script type="text/javascript">
+
+    var submit_button = $('#saveForm');
+    submit_button.click(function () {
+        //alert("You clicked me!");
+        parseIt(getData(getParams()));
+    });
+    function getParams() {
+
+        var taskSec = document.getElementById("type_dd");
+        var taskSelected_text = taskSec.options[taskSec.selectedIndex].innerHTML;
+        var statSec = document.getElementById("status_dd");
+        var statSelected_text = statSec.options[statSec.selectedIndex].innerHTML;
+        var params = {};
+        params['task'] = taskSelected_text;
+        params['status'] = statSelected_text;
+        console.log('Task: ' + params.task + ' Status: ' + params.status);
+        return params;
+    }
+
+
+    function getData(params) {
+        console.log("Type: " + params.task + " Status: " + params.status);
+
+        var dataURL = "/hita/service/search/"
+        if (params.task != "" && params.status != "") {
+            //searching by type and status.
+            dataURL = dataURL + "byTySt";
+        }
+        else {
+            if (params.task != "") {
+                //search by type
+                dataURL = dataURL + "byType";
+            }
+            else {
+                //search by status
+                dataURL = dataURL + "byStatus";
+            }
+        }
+        dataURL = dataURL + "?type=" + params.task + "&status=" + params.status;
+        console.log(dataURL);;
+        //send request to servlet
+        $.ajax({
+            url: dataURL,
+            type: 'GET',
+            datatype: 'json',
+            async: false,
+            success: function (data) {
+                raw_data = data;
+                console.log("Raw data " + raw_data);
+            },
+            error: function () {
+                // console.log('Failed!');
+            }
+        });
+        return raw_data;
+    }
+
+    function parseIt(JSONData) {
+
+        var table_info = "<h2>Results</h2><table id = \"resultTable\" border=\"3\" CELLPADDING=\"2\" ><tr><th>ID</th><th>Name</th><th>Type</th><th>Status</th><th>Description</th><th>Update Time</th><th>Submission Time</th></tr>";
+        $.each(raw_data, function (key, val) {
+            var val = raw_data[key];
+            table_info += ('<tr id="' + key + '"><td>' + val.uuid + '</td><td>' + val.name + '</td><td>' + val.type + '</td><td>' + val.status + '</td><td>' + val.description + '</td><td>' + val.updateTime + '</td><td>' + val.submitTime + '</td></tr>');
+create_table(table_info);
+        });
+}
+
+    function create_table(info) {
+        info += "</table>";
+        info += "<br /><br /><br />";
+        info += "<input type=\"button\" class=\"more\" onClick=\"resetForm()\" value=\"Reset\" />";
+        document.getElementById('results').innerHTML = info;
+    }
+
+
+    function resetForm() {
+        //alert("You clicked me!");
+        document.getElementById('search_form').reset();
+        document.getElementById('results').innerHTML = "";
+    }
+</script>

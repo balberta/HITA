@@ -144,6 +144,7 @@ public class Storage {
 
     public void taskSearch() {
 
+
     }
 
     public List searchByStatus(String status) throws SQLException {
@@ -164,14 +165,16 @@ public class Storage {
             task.setStatus(res.getString("status"));
             task.setDescription(res.getString("description"));
             task.setUpdateTime(fmt.print(udt));
-            task.setSubmitTime(fmt.print(sdt));;
+            task.setSubmitTime(fmt.print(sdt));
+            searchRes.add(task);
         }
         return searchRes;
     }
 
     public List searchByType(String type) throws SQLException {
-        System.out.println("In searchByStatus");
+        System.out.println("In searchByType");
         List<Task> searchRes = new ArrayList();
+        System.out.printf("SELECT * FROM master WHERE type = %s\n", type);
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM master WHERE type = ?");
         statement.setString(1, type);
         ResultSet res = statement.executeQuery();
@@ -187,6 +190,32 @@ public class Storage {
             task.setDescription(res.getString("description"));
             task.setUpdateTime(fmt.print(udt));
             task.setSubmitTime(fmt.print(sdt));
+            searchRes.add(task);
+        }
+        System.out.println(searchRes.toString());
+        return searchRes;
+    }
+
+    public List searchByTypeStatus(String type, String status) throws SQLException {
+        System.out.println("In searchByTypeStatus");
+        List<Task> searchRes = new ArrayList();
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM master WHERE type = ? AND status = ?");
+        statement.setString(1, type.toUpperCase());
+        statement.setString(2, status.toUpperCase());
+        ResultSet res = statement.executeQuery();
+        while (res.next()) {
+            Task task = new Task();
+            DateTime udt = new DateTime(res.getTimestamp("updateTime"));
+            DateTime sdt = new DateTime(res.getTimestamp("submitTime"));
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            task.setUuid(res.getInt("id"));
+            task.setName(res.getString("name"));
+            task.setType(res.getString("type"));
+            task.setStatus(res.getString("status"));
+            task.setDescription(res.getString("description"));
+            task.setUpdateTime(fmt.print(udt));
+            task.setSubmitTime(fmt.print(sdt));
+            searchRes.add(task);
         }
         return searchRes;
     }

@@ -1,0 +1,121 @@
+function DrawTable(offset, thisMin, thisMax)
+{
+
+	//alert(min + " -> " + max);
+	if(thisMin > 0)
+	{
+		thisMin = (thisMin+offset);
+		thisMax = (thisMax+offset);
+       // alert("damn");
+	}
+	var sec = document.getElementById("metricSelection");
+	var selected_text = sec.options[sec.selectedIndex].innerHTML;
+	if (selected_text == "SoyMDB:onMessage" || selected_text == "YaiListener:onMessage")
+	{
+		var table_info = "<table id = \"detailsTable\" border=\"3\" CELLPADDING=\"2\" ><tr><th></th><th>Date</th><th>Total Transactions</th><th>Minimum Response Time</th><th>Maximum Response Time</th><th>Average Response Time</th><th>Transactions Per Second</th><th>50th Percentile</th><th>75th Percentile</th><th>90th Percentile</th><th>99th Percentile</th><th>Over 10 Seconds</th><th>Over 20 Seconds</th></tr>";
+		var data_url = '/ESPerformanceMonitors/service/chart/rtam/3?sdate='+thisMin+'&edate='+thisMax+'&metric='+selected_text;
+		$.getJSON(data_url, function processJSON(raw_data) {
+			/// data will hold the php array as a javascript object
+            var data = new Array();
+            var data = raw_data.result;
+			$.each(data, function(key, val) {
+					table_info += ('<tr id="' + key + '"><td><input type="button" class="more" onClick="get_details(this)" value="+" /></td><td>' + val.TS + '</td><td>' + val.TOTAL_INQUIRIES + '</td><td>' + val.MINIMUM_RESPONSE + '</td><td>' + val.MAXIMUM_RESPONSE + '</td><td>' + parseInt(val.AVG_RESPONSE) + '</td><td>' + parseInt(val.INQUIRIES_PER_SECOND) + '</td><td>' + val.FIFTY + '</td><td>' + val.SEVENTYFIVE + '</td><td>' + val.NINETY + '</td><td>' + val.NINETYNINE + '</td><td>' + val.OVER_TEN_SECONDS + '</td><td>' + val.OVER_TWENTY_SECONDS + '</td></tr>');
+			});
+			create_table(table_info);
+		});
+	}
+	else
+	{
+		var table_info = "<table id = \"detailsTable\" border=\"3\" CELLPADDING=\"2\" ><tr><th>Date</th><th>Total Transactions</th><th>Minimum Response Time</th><th>Maximum Response Time</th><th>Average Response Time</th><th>Transactions Per Second</th><th>50th Percentile</th><th>75th Percentile</th><th>90th Percentile</th><th>99th Percentile</th><th>Over 10 Seconds</th><th>Over 20 Seconds</th></tr>";
+		var data_url = '/ESPerformanceMonitors/service/chart/rtam/3?sdate='+thisMin+'&edate='+thisMax+'&metric='+selected_text;
+		$.getJSON(data_url, function processJSON(raw_data) {
+            var data = new Array();
+            var data = raw_data.result;
+			/// data will hold the php array as a javascript object
+			$.each(data, function(key, val) {
+					table_info += ('<tr id="' + key + '"><td>' + val.TS + '</td><td>' + val.TOTAL_INQUIRIES + '</td><td>' + val.MINIMUM_RESPONSE + '</td><td>' + val.MAXIMUM_RESPONSE + '</td><td>' + parseInt(val.AVG_REPSONSE) + '</td><td>' + parseInt(val.INQUIRIES_PER_SECOND) + '</td><td>' + val.FIFTY + '</td><td>' + val.SEVENTYFIVE + '</td><td>' + val.NINETY + '</td><td>' + val.NINETYNINE + '</td><td>' + val.OVER_TEN_SECONDS + '</td><td>' + val.OVER_TWENTY_SECONDS + '</td></tr>');
+			});
+			create_table(table_info);
+		});
+	}
+
+}
+function create_table(info)
+{
+	info += "</table>";
+	document.getElementById('resulTS').innerHTML = info;
+
+}
+var num_rows = 0;
+
+function get_details(obj)
+{
+	//get row number of selected row
+	var par=obj.parentNode;
+	var data_script="";
+	num_rows = 0;
+	while(par.nodeName.toLowerCase()!='tr')
+	{
+		par=par.parentNode;
+	}
+
+	//get data from selected row
+	var sdate = par.getElementsByTagName('td')[1];
+	var temp = par.getElementsByTagName('td')[0];
+
+	var sec = document.getElementById("metricSelection");
+	var selected_text = sec.options[sec.selectedIndex].innerHTML;
+	data_script='='+sdate.innerHTML+"&metric="+selected_text;
+
+	//get JSON result for data
+	var i = 0;
+	var detail_tag = "";
+	var back_color = "";
+
+	//names.reverse();
+	$.getJSON(data_script, function(raw_data)
+	{
+        var details = new Array();
+        var details = raw_data.result;
+		$.each(details, function(key, val)
+		{
+			if (val != false)
+			{
+				num_rows++;
+				var table = document.getElementById('detailsTable');
+				var row = table.insertRow(par.rowIndex+1);
+				row.style.backgroundColor="#5a6068";
+				row.style.color="#FFFFFF";
+				var cell0=row.insertCell(0);
+				var cell1=row.insertCell(1);
+				var cell2=row.insertCell(2);
+				var cell3=row.insertCell(3);
+				var cell4=row.insertCell(4);
+				var cell5=row.insertCell(5);
+				var cell6=row.insertCell(6);
+				var cell7=row.insertCell(7);
+				var cell8=row.insertCell(8);
+				var cell9=row.insertCell(9);
+				var cell10=row.insertCell(10);
+				var cell11=row.insertCell(11);
+				var cell12=row.insertCell(12);
+				cell0.innerHTML=val.TAG;
+				cell1.innerHTML=val.TS;
+				cell2.innerHTML=val.TOTAL_INQUIRIES;
+				cell3.innerHTML=val.MINIMUM_RESPONSE ;
+				cell4.innerHTML=val.MAXIMUM_RESPONSE;
+				cell5.innerHTML=val.AVG_REPSONSE;
+				cell6.innerHTML=val.INQUIRIES_PER_SECOND;
+				cell7.innerHTML=val.FIFTY;
+				cell8.innerHTML=val.SEVENTYFIVE;
+				cell9.innerHTML=val.NINETY;
+				cell10.innerHTML=val.NINETYNINE;
+				cell11.innerHTML=val.OVER_TEN_SECONDS;
+				cell12.innerHTML=val.OVER_TWENTY_SECONDS;
+			}
+			i++;
+		});
+	});
+	//alert(num_rows);
+	temp.innerHTML='<input type="button" class="more" onClick="remove_details(this, num_rows)" value="-" />';
+}

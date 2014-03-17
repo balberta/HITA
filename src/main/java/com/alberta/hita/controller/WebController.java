@@ -79,8 +79,7 @@ public class WebController {
                   @RequestParam(value = "type", required = false) String type,
                   @RequestParam(value = "status", required = false) String status,
                   @RequestParam(value = "sdate", required = false) String sdate,
-                  @RequestParam(value = "edate", required = false) String edate,
-                  @RequestParam("id") Integer id) {
+                  @RequestParam(value = "edate", required = false) String edate) {
         List<Task> searchRes = new ArrayList<Task>();
         try {
             switch (field) {
@@ -91,6 +90,9 @@ public class WebController {
                     searchRes = db_store.searchByType(type);
                     break;
                 case "byDate":
+                    break;
+                case "byTySt":
+                    searchRes = db_store.searchByTypeStatus(type, status);
                     break;
             }
         } catch (SQLException e) {

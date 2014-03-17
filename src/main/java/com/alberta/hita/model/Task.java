@@ -96,5 +96,16 @@ public class Task {
         this.description = description;
     }
 
-
+    @Override
+    public String toString() {
+        return "Task{" +
+                "uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
+                ", description='" + description + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", submitTime='" + submitTime + '\'' +
+                '}';
+    }
 }
