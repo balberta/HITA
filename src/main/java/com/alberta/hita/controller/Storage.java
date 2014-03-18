@@ -19,17 +19,18 @@ import java.util.List;
  */
 public class Storage {
     //Database connection parameters
-    /*String url = "jdbc:mysql://10.129.59.133:3306/";
+    String url = "jdbc:mysql://10.129.59.133:3306/";
+    String driver = "com.mysql.jdbc.Driver";
     String dbname = "hita";
     String userName = "hitaUser";
-    String password = "u34atFRwNNMKB375";     */
-
+    String password = "u34atFRwNNMKB375";
+    /*
     String url = "jdbc:mysql://192.168.1.100:3306/";
     String dbname = "hita";
     String driver = "com.mysql.jdbc.Driver";
     String userName = "hitaUser";
     String password = "Yr9deFf9zntDRPun";
-
+      */
     Task task = new Task();
     Connection conn;
     //TODO:Add support for submission time
@@ -151,7 +152,7 @@ public class Storage {
 
     }
 
-    public List searchByStatus(String status) throws SQLException {
+    public List searchByStatus(String status, String limit, String offset) throws SQLException {
         System.out.println("In searchByStatus");
         List<Task> searchRes = new ArrayList();
         System.out.printf("SELECT * FROM master WHERE status = %s\n", status);
@@ -175,7 +176,7 @@ public class Storage {
         return searchRes;
     }
 
-    public List searchByType(String type) throws SQLException {
+    public List searchByType(String type, String limit, String offset) throws SQLException {
         System.out.println("In searchByType");
         List<Task> searchRes = new ArrayList();
         System.out.printf("SELECT * FROM master WHERE type = %s\n", type);
@@ -200,7 +201,7 @@ public class Storage {
         return searchRes;
     }
 
-    public List searchByTypeStatus(String type, String status) throws SQLException {
+    public List searchByTypeStatus(String type, String status, String limit, String offset) throws SQLException {
         System.out.println("In searchByTypeStatus");
         List<Task> searchRes = new ArrayList();
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM master WHERE type = ? AND status = ?");
