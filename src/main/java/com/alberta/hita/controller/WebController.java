@@ -2,6 +2,7 @@ package com.alberta.hita.controller;
 
 
 import com.alberta.hita.model.Task;
+import com.alberta.hita.model.nocMetric;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -111,4 +112,26 @@ public class WebController {
         }
         return null;
     }
+
+    @RequestMapping("/metrics/{facet}")
+    @ResponseStatus(HttpStatus.OK)
+    public
+    @ResponseBody
+    nocMetric doMetrics(@PathVariable("facet") String facet
+    ) {
+        nocMetric metricRes = null;
+       // nocMetric metricRes = new nocMetric();
+        try {
+            switch (facet) {
+                case "all":
+                    metricRes = db_store.getHighLevelMetrics();
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return metricRes;
+    }
+
+
 }

@@ -1,7 +1,6 @@
 package com.alberta.hita.controller;
 
-import com.alberta.hita.model.Status;
-import com.alberta.hita.model.Task;
+import com.alberta.hita.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -85,10 +84,10 @@ public class Storage {
     public int createTask(Task task) throws SQLException {
 
         PreparedStatement statement = conn.prepareStatement("INSERT INTO master(name, type, status, description) VALUES (?,?,?,?)");
-        statement.setString(1,task.getName());
-        statement.setString(2,task.getType());
+        statement.setString(1, task.getName());
+        statement.setString(2, task.getType());
         statement.setString(3, (Status.NEW).getText());
-        statement.setString(4,task.getDescription());
+        statement.setString(4, task.getDescription());
         statement.executeUpdate();
         return getMostRecentTask();
 
@@ -225,18 +224,70 @@ public class Storage {
         return searchRes;
     }
 
-   private int getMostRecentTask() throws SQLException {
-       int max = 0;
-       PreparedStatement maxID = conn.prepareStatement("SELECT MAX(id) FROM master");
-       ResultSet res = maxID.executeQuery();
-       while (res.next()) {
-           max = res.getInt("MAX(id)");
-       }
+    private int getMostRecentTask() throws SQLException {
+        int max = 0;
+        PreparedStatement maxID = conn.prepareStatement("SELECT MAX(id) FROM master");
+        ResultSet res = maxID.executeQuery();
+        while (res.next()) {
+            max = res.getInt("MAX(id)");
+        }
 
-       return max;
-   }
-
-    public void closeConnection() throws SQLException {
-        this.conn.close();
+        return max;
     }
+
+    public nocMetric getHighLevelMetrics() throws SQLException {
+        System.out.println("In getHighLevelMetrics");
+        nocMetric resp = new nocMetric();
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM stats");
+        ResultSet res = statement.executeQuery();
+        parseNOC(resp);
+        parseIvT(res, resp);
+        return resp;
+
+
+    }
+
+
+    private void parseNOC(nocMetric resp) throws SQLException {
+        System.out.println("Parsing metrics");
+        nocMetric met = new nocMetric();
+        ArrayList<DataPoint<Integer>> data = new ArrayList<>();
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM statsTotals ");
+        ResultSet res = statement.executeQuery();
+        while (res.next()) {
+            DataPoint<Integer> point = new DataPoint<>(res.getString("status"), res.getInt("count"));
+            data.add(point);
+        }
+        resp.setNocMet(data);
+    }
+
+    private void parseIvT(ResultSet res, nocMetric resp) throws SQLException {
+        System.out.println("Parsing IvT");
+        ArrayList<DataPoint<Integer>> openData = new ArrayList<>();
+        ArrayList<DataPoint<Integer>> newData = new ArrayList<>();
+        ArrayList<DataPoint<Integer>> closedData = new ArrayList<>();
+        DataPoint<Integer> point;
+        while (res.next()) {
+            switch (res.getString("status")) {
+                case "Open":
+                    point = new DataPoint<>(res.getString("type"), res.getInt("count"));
+                    openData.add(point);
+                    break;
+                case "New":
+                    point = new DataPoint<>(res.getString("type"), res.getInt("count"));
+                    newData.add(point);
+                    break;
+                case "Closed":
+                    point = new DataPoint<>(res.getString("type"), res.getInt("count"));
+                    closedData.add(point);
+                    break;
+            }
+
+        }
+
+        resp.setNewMet(newData);
+        resp.setClosedMet(closedData);
+        resp.setOpenMet(openData);
+    }
+
 }

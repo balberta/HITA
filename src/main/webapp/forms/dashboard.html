@@ -1,9 +1,546 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>HITA Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="../css/view.css" media="all">
+    <script type="text/javascript" src="../js/view.js"></script>
+    <script src="../js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+    <script src="../js/highcharts.js"></script>
+    <script src="../js/highcharts-more.js"></script>
+    <script src="../js/exporting.js"></script>
 </head>
-<body>
-<h3>Under construction</h3>
+<body id="main_body">
+
+<img id="top" src="../img/top.png" alt="">
+
+<div id="container">
+    <h1></h1>
+
+    <!--<div id=imgDiv><img src="../img/logo.png" width="238" height="84" align="left"/></div> -->
+
+
+    <div class="nav">
+
+        <h3>&nbsp;</h3>
+
+        <h3>&nbsp;</h3>
+
+        <h3>Dashboard</h3>
+
+        <p>Landing page.</p>
+
+        <div id='graphs'>
+            <table>
+                <tr>
+                    <td>
+                        <div id="graphTL"></div>
+                    </td>
+                    <td>
+                        <div id="graphTR"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="graphBL"></div>
+                    </td>
+                    <td>
+                        <div id="graphBR"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+
+    <div id="footer">
+        Created for <a href="../index.html">HITA</a></div>
+</div>
+<img id="bottom" src="../img/bottom.png" alt="">
 </body>
 </html>
+
+<script type='text/javascript'>
+var openData = {};
+var newData = {};
+var nocData = {};
+var closedData = {};
+
+
+Highcharts.theme = {
+    colors: ["#DDDF0D", "#7798BF", "#55BF3B", "#DF5353", "#aaeeee", "#ff0066", "#eeaaee",
+        "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+    chart: {
+        backgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, 'rgb(96, 96, 96)'],
+                [1, 'rgb(16, 16, 16)']
+            ]
+        },
+        borderWidth: 0,
+        borderRadius: 15,
+        plotBackgroundColor: null,
+        plotShadow: false,
+        plotBorderWidth: 0
+    },
+    title: {
+        style: {
+            color: '#FFF',
+            font: '16px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+        }
+    },
+    subtitle: {
+        style: {
+            color: '#DDD',
+            font: '12px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+        }
+    },
+    xAxis: {
+        gridLineWidth: 0,
+        lineColor: '#999',
+        tickColor: '#999',
+        labels: {
+            style: {
+                color: '#999',
+                fontWeight: 'bold'
+            }
+        },
+        title: {
+            style: {
+                color: '#AAA',
+                font: 'bold 12px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        alternateGridColor: null,
+        minorTickInterval: null,
+        gridLineColor: 'rgba(255, 255, 255, .1)',
+        minorGridLineColor: 'rgba(255,255,255,0.07)',
+        lineWidth: 0,
+        tickWidth: 0,
+        labels: {
+            style: {
+                color: '#999',
+                fontWeight: 'bold'
+            }
+        },
+        title: {
+            style: {
+                color: '#AAA',
+                font: 'bold 12px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+            }
+        }
+    },
+    legend: {
+        itemStyle: {
+            color: '#CCC'
+        },
+        itemHoverStyle: {
+            color: '#FFF'
+        },
+        itemHiddenStyle: {
+            color: '#333'
+        }
+    },
+    labels: {
+        style: {
+            color: '#CCC'
+        }
+    },
+    tooltip: {
+        backgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, 'rgba(96, 96, 96, .8)'],
+                [1, 'rgba(16, 16, 16, .8)']
+            ]
+        },
+        borderWidth: 0,
+        style: {
+            color: '#FFF'
+        }
+    },
+
+
+    plotOptions: {
+        series: {
+            shadow: true
+        },
+        line: {
+            dataLabels: {
+                color: '#CCC'
+            },
+            marker: {
+                lineColor: '#333'
+            }
+        },
+        spline: {
+            marker: {
+                lineColor: '#333'
+            }
+        },
+        scatter: {
+            marker: {
+                lineColor: '#333'
+            }
+        },
+        candlestick: {
+            lineColor: 'white'
+        }
+    },
+
+    toolbar: {
+        itemStyle: {
+            color: '#CCC'
+        }
+    },
+
+    navigation: {
+        buttonOptions: {
+            symbolStroke: '#DDDDDD',
+            hoverSymbolStroke: '#FFFFFF',
+            theme: {
+                fill: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0.4, '#606060'],
+                        [0.6, '#333333']
+                    ]
+                },
+                stroke: '#000000'
+            }
+        }
+    },
+
+    // scroll charts
+    rangeSelector: {
+        buttonTheme: {
+            fill: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0.4, '#888'],
+                    [0.6, '#555']
+                ]
+            },
+            stroke: '#000000',
+            style: {
+                color: '#CCC',
+                fontWeight: 'bold'
+            },
+            states: {
+                hover: {
+                    fill: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0.4, '#BBB'],
+                            [0.6, '#888']
+                        ]
+                    },
+                    stroke: '#000000',
+                    style: {
+                        color: 'white'
+                    }
+                },
+                select: {
+                    fill: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0.1, '#000'],
+                            [0.3, '#333']
+                        ]
+                    },
+                    stroke: '#000000',
+                    style: {
+                        color: 'yellow'
+                    }
+                }
+            }
+        },
+        inputStyle: {
+            backgroundColor: '#333',
+            color: 'silver'
+        },
+        labelStyle: {
+            color: 'silver'
+        }
+    },
+
+    navigator: {
+        handles: {
+            backgroundColor: '#666',
+            borderColor: '#AAA'
+        },
+        outlineColor: '#CCC',
+        maskFill: 'rgba(16, 16, 16, 0.5)',
+        series: {
+            color: '#7798BF',
+            lineColor: '#A6C7ED'
+        }
+    },
+
+    scrollbar: {
+        barBackgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0.4, '#888'],
+                [0.6, '#555']
+            ]
+        },
+        barBorderColor: '#CCC',
+        buttonArrowColor: '#CCC',
+        buttonBackgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0.4, '#888'],
+                [0.6, '#555']
+            ]
+        },
+        buttonBorderColor: '#CCC',
+        rifleColor: '#FFF',
+        trackBackgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, '#000'],
+                [1, '#333']
+            ]
+        },
+        trackBorderColor: '#666'
+    },
+
+    // special colors for some of the demo examples
+    legendBackgroundColor: 'rgba(48, 48, 48, 0.8)',
+    legendBackgroundColorSolid: 'rgb(70, 70, 70)',
+    dataLabelsColor: '#444',
+    textColor: '#E0E0E0',
+    maskColor: 'rgba(255,255,255,0.3)'
+};
+
+
+/**
+ * Kicks off the web-page
+ */
+$(document).ready(function start_it_up() {
+    master();
+});
+
+function master() {
+    var JSONData = getData();
+    parseIt(JSONData);
+    drawIt();
+}
+
+/**
+ * Gets the selected values from the drop down menus and stores them in a JS Object
+ with keys 'metric', 'interval', 'profile', and 'limit'. This object is then returned.
+ As of 20130821 there is no support for the user to select a profile or a limit. Once this support is added
+ make the needed changes in this function to include it in the parameters object.
+ * @returns {} Array of URL parameters
+ */
+function getParams() {
+    var index = document.getElementById("metricSelection").selectedIndex;
+    var value = document.getElementById("metricSelection").options[index].value;
+    var params = {};
+    params['metric'] = value;
+    return params;
+}
+/**
+ *  Makes a call to the servlet to pull down the JSON response with the appropriate
+ *data. This function takes the Params object as an argument, builds the data url. Once built
+ *this function sends the request and returns the JSON object.
+ * @param params  List of parameters to be sent as URL parameters.
+ * @returns JSON object containing the response from the server.
+ */
+function getData() {
+    var raw_data = null;
+    //send request to servlet
+    $.ajax({
+        url: "/hita/service/metrics/all",
+        type: 'GET',
+        datatype: 'json',
+        async: false,
+        success: function (data) {
+            raw_data = data;
+        },
+        error: function () {
+            console.log('Failed!');
+        }
+    });
+    return raw_data;
+}
+
+/**
+ *This function splits the JSON object response into the arrays in a format
+ * suited for Highcharts.
+ * @param JSONData JSON data object to be split into separate arrays.
+ */
+function parseIt(JSONData) {
+
+
+    $.each(JSONData, function parser(index, val) {
+
+
+        /*switch (val.name) {
+         case "openMet":
+         console.log("Open");
+         var data = {};
+         data['key'] = val.key;
+         data['count'] = val.count;
+         openData.push(data);
+         break;
+         case "newMet":
+         console.log("New");
+         var data = {};
+         data['key'] = val.key;
+         data['count'] = val.count;
+         openData.push(data);
+         break;
+         case "closedMet":
+         console.log("Closed");
+         var data = {};
+         data['key'] = val.key;
+         data['count'] = val.count;
+         openData.push(data);
+         break;
+         case "noc":
+         console.log("NOC");
+         var data = {};
+         data['key'] = val.key;
+         data['count'] = val.count;
+         nocData.push(data);
+         break;
+         } */
+
+
+    });
+
+    var nocJSON = JSONData.nocMet;
+    var newJSON = JSONData.newMet;
+    var openJSON = JSONData.openMet;
+    var closedJSON = JSONData.closedMet;
+
+    $.each(nocJSON, function parser(index, val) {
+        // console.log(val.key+ '  ' + val.count);
+        nocData[val.key] = val.count;
+        if(val.key != 'Closed'){
+            nocData["Closed"] = 0;
+        }
+
+    });
+    $.each(newJSON, function parser(index, val) {
+        // console.log(val.key+ '  ' + val.count);
+        newData[val.key] = val.count;
+
+    });
+    $.each(openJSON, function parser(index, val) {
+        //console.log(val.key+ '  ' + val.count);
+        openData[val.key] = val.count;
+
+    });
+    $.each(closedJSON, function parser(index, val) {
+        //console.log(val.key+ '  ' + val.count);
+        closedData[val.key] = val.count;
+
+    });
+    console.log(nocData);
+    console.log(newData);
+    console.log(openData);
+    console.log(closedData);
+}
+
+function drawIt() {
+    Highcharts.setOptions(Highcharts.theme);
+
+    // Radialize the colors
+    Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+        return {
+            radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+            stops: [
+                [0, color],
+                [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+            ]
+        };
+    });
+    //Draw chart for Account Open
+    window.graph = new Highcharts.Chart({
+
+//    $('#chart').highcharts({
+        chart: {
+            renderTo: 'graphTL',
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, 'rgb(96, 96, 96)'],
+                    [1, 'rgb(16, 16, 16)']
+                ]
+            },
+            borderWidth: 0,
+            borderRadius: 15,
+            plotBackgroundColor: null,
+            plotShadow: false,
+            plotBorderWidth: 0
+        },
+        title: {
+            style: {
+                color: '#FFF',
+                font: '16px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+            },
+            text: 'Account Open Volume Breakdown'
+        },
+        credits: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: '{series.name}: {point.y}'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#FFFFFF',
+                    connectorColor: '#FFFFFF',
+                    formatter: function () {
+                        return this.point.name + ': ' + this.y;
+                    }
+                }
+            }
+        },
+
+        series: [
+            {
+                type: 'pie',
+                name: 'Accounts Opened',
+                data: [
+                    {
+                        name: 'Open',
+                        y: nocData['Open'],
+                        sliced: false,
+                        selected: false
+
+                    },
+                    {
+                        name: 'New',
+                        y: nocData['New'],
+                        sliced: false,
+                        selected: false
+
+                    },
+                    {
+                        name: 'Closed',
+                        y: nocData['Closed'],
+                        sliced: false,
+                        selected: false
+
+                    }
+                ]
+            }
+        ]
+    });
+}
+</script>
