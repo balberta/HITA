@@ -4,12 +4,11 @@ package com.alberta.hita.model;
  * Description.
  * <p/>
  * Date: 10/7/13
- *
  */
 public class Task {
 
     private int uuid;
-    private String  name;
+    private String name;
     private String type;
     private String status;
     private String description;

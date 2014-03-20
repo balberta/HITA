@@ -5,10 +5,9 @@ package com.alberta.hita.model;
  * <p/>
  * Date: 3/13/14
  *
- *
  * @version 1.0
  */
-public class Tuple<X,Y> {
+public class Tuple<X, Y> {
     public final X x;
     public final Y y;
 

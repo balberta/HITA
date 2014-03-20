@@ -5,7 +5,6 @@ package com.alberta.hita.model;
  * <p/>
  * Date: 10/7/13
  *
- *
  * @version 1.0
  */
 public enum Status {

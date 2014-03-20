@@ -66,6 +66,13 @@ body {
 
     width: 640px;
 }
+#graphs {
+    background: #fff;
+
+    margin: 0 auto;
+
+    width: 640px;
+}
 
 #top {
     display: block;

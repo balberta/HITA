@@ -51,11 +51,6 @@
       </dependency>
       <dependency>
           <groupId>org.slf4j</groupId>
-          <artifactId>log4j-over-slf4j</artifactId>
-          <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>org.slf4j</groupId>
           <artifactId>slf4j-log4j12</artifactId>
           <version>${slf4j.version}</version>
       </dependency>
@@ -86,6 +81,11 @@
           <version>2.5</version>
           <scope>provided</scope>
       </dependency>
+      <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.15</version>
+      </dependency>
 
 
   </dependencies>
@@ -103,6 +103,22 @@
                      <maxIdleTime>60000</maxIdleTime>
                  </connector>
              </connectors>
+                 <systemProperties>
+                     <systemproperty>
+                         <name>org.apache.commons.logging.Log</name>
+                         <value>
+                             org.apache.commons.logging.impl.Log4JLogger
+                         </value>
+                     </systemproperty>
+                     <systemproperty>
+                         <name>slf4j</name>
+                         <value>false</value>
+                     </systemproperty>
+                     <systemproperty>
+                         <name>log4j.configuration</name>
+                         <value>file:/home/brian/Projects/OpenSource/HITA/src/main/resources/log4j.properties</value>
+                     </systemproperty>
+                 </systemProperties>
              </configuration>
              <dependencies>
                  <dependency>
